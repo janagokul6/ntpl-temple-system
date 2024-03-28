@@ -1,0 +1,22 @@
+.CalendarBox_react-calendar {
+  display: flex;
+  justify-content: center;
+}
+.react-calendar {
+  width: 100% !important;
+  border-radius: 10px;
+}
+
+.btn-success {
+  color: white !important;
+}
+
+.profile-details-of-generated-employee img {
+  width: 150px;
+  border-radius: 50%;
+}
+
+.profile-details-of-generated-employee p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
