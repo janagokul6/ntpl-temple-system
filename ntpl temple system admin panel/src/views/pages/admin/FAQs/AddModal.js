@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -26,17 +26,26 @@ import { API } from 'src/globalVariable'
 import { getFAQsList } from 'src/redux/action'
 import { useDispatch, useSelector } from 'react-redux'
 
-const AddModal = ({ visible, setVisible }) => {
+const AddModal = ({ visible, setVisible, faqDataToUpdate }) => {
   const dispatch = useDispatch()
+  const { _id, question, answer } = faqDataToUpdate
   const [data, setData] = useState({ question: '', answer: '' })
+  useEffect(() => {
+    setData({ question: question, answer: answer })
+  }, [answer, question])
   const updateData = () => {
     dispatch(getFAQsList())
   }
   const handleSave = async (e) => {
     try {
-      const res = await API.post('/admin/faq/add', data)
+      if (_id) {
+        await API.put(`/admin/faq/update/${_id}`, data)
+      } else {
+        await API.post('/admin/faq/add', data)
+      }
       setVisible(false)
       updateData()
+      setData({ question: '', answer: '' })
     } catch (error) {
       console.log(error)
     }

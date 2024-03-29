@@ -40,7 +40,7 @@ const AboutUs = () => {
     try {
       const res = await API.post('/admin/website-details/add', { about: data })
       updateData()
-      console.log(res)
+      setData({ title: '', image: '', description: '' })
     } catch (error) {
       console.log(error)
     }

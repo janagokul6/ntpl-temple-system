@@ -23,7 +23,7 @@ const websiteDetailsSchema = mongoose.Schema({
     address: { type: String },
     email: { type: String }
   }
-})
+},{timestamp:true})
 
 const WebSiteDetailsModel = mongoose.model("WebSiteDetails", websiteDetailsSchema);
 

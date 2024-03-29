@@ -46,7 +46,15 @@ const BasicDetails = () => {
     try {
       const res = await API.post('/admin/website-details/add', { basicDetails: data })
       updateData()
-      console.log(res)
+      imageRef = null
+      setData({
+        iosLink: '',
+        androidLink: '',
+        logo: '',
+        number: '',
+        email: '',
+        address: '',
+      })
     } catch (error) {
       console.log(error)
     }

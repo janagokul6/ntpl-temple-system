@@ -32,7 +32,7 @@ const TermsNConditions = () => {
     try {
       const res = await API.post('/admin/website-details/add', { tmc: data })
       updateData()
-      console.log(res)
+      setData({ title: '', description: '' })
     } catch (error) {
       console.log(error)
     }

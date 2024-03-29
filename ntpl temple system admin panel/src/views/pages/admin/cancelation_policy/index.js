@@ -32,7 +32,7 @@ const CancelationPolicy = () => {
     try {
       const res = await API.post('/admin/website-details/add', { cancelationPolicy: data })
       updateData()
-      console.log(res)
+      setData({ title: '', description: '' })
     } catch (error) {
       console.log(error)
     }

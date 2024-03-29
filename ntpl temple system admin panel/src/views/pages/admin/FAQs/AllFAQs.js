@@ -13,11 +13,15 @@ import {
 import AddModal from './AddModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { getFAQsList } from 'src/redux/action'
+import Typography from 'src/views/theme/typography/Typography'
+import CIcon from '@coreui/icons-react'
+import { cilPencil, cilTrash, cilZoomIn } from '@coreui/icons'
+import { API } from 'src/globalVariable'
 const Centers = () => {
   const dispatch = useDispatch()
   const AllFaqs = useSelector((state) => state.faqsReducer)
   const [visible, setVisible] = useState(false)
-  const [faqList, setFaqList] = useState([])
+  const [faqDataToUpdate, setFaqDataToUpdate] = useState({})
 
   useEffect(() => {
     if (AllFaqs.length === 0) {
@@ -25,6 +29,19 @@ const Centers = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const deleteData = async (id) => {
+    try {
+      await API.delete(`admin/faq/delete/${id}`)
+      dispatch(getFAQsList())
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleUpdate = async (item) => {
+    setVisible(true)
+    setFaqDataToUpdate(item)
+  }
 
   return (
     <>
@@ -63,7 +80,31 @@ const Centers = () => {
                 <CAccordion activeItemKey={0}>
                   {AllFaqs.map((item, i) => (
                     <CAccordionItem itemKey={i} key={i}>
-                      <CAccordionHeader>{item.question}</CAccordionHeader>
+                      <CAccordionHeader className="">
+                        <p className="col-9 col-lg-10">{item.question}</p>
+                        <div className="d-flex gap-3 col-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleUpdate(item)
+                            }}
+                            style={{ color: 'white' }}
+                            className="btn btn-warning m-1"
+                          >
+                            <CIcon icon={cilPencil} />
+                          </button>
+                          <button
+                            style={{ color: 'white' }}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              deleteData(item._id)
+                            }}
+                            className="btn btn-danger m-1"
+                          >
+                            <CIcon icon={cilTrash} />
+                          </button>
+                        </div>
+                      </CAccordionHeader>
                       <CAccordionBody>{item.answer}</CAccordionBody>
                     </CAccordionItem>
                   ))}
@@ -73,7 +114,7 @@ const Centers = () => {
           </CCard>
         </CCol>
       </CRow>
-      <AddModal visible={visible} setVisible={setVisible} />
+      <AddModal visible={visible} faqDataToUpdate={faqDataToUpdate} setVisible={setVisible} />
     </>
   )
 }
